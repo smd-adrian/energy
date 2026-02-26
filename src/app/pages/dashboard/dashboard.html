@@ -1,0 +1,84 @@
+<!-- Filtros -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="selectedYear">
+          <option>2024</option>
+          <option>2023</option>
+          <option>2022</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="selectedRegion">
+          <option>Global</option>
+          <option>Europa</option>
+          <option>América del Norte</option>
+          <option>Asia</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="selectedSource">
+          <option>Todas</option>
+          <option>Solar</option>
+          <option>Eólica</option>
+          <option>Hidro</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary w-100" (click)="applyFilters()">Aplicar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Métricas -->
+<div class="row g-4 mb-4">
+  @for (metric of metrics(); track metric.label) {
+    <div class="col-md-6 col-xl-3">
+      <div class="card metric-card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">{{ metric.label }}</h6>
+          <h3>{{ metric.value }}</h3>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Gráfico -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h5 class="mb-3">Producción de Energía Renovable (2014-2024)</h5>
+    <canvas id="energyChart" height="100"></canvas>
+  </div>
+</div>
+
+<!-- Tabla -->
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="mb-3">Resumen por Región</h5>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Región</th>
+            <th>Producción (TWh)</th>
+            <th>Consumo (TWh)</th>
+            <th>% Renovable</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (data of regionalData(); track data.region) {
+            <tr>
+              <td>{{ data.region }}</td>
+              <td>{{ data.produccion }}</td>
+              <td>{{ data.consumo }}</td>
+              <td class="text-success fw-bold">{{ data.porcentajeRenovable }}%</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

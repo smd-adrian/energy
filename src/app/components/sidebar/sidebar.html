@@ -1,0 +1,39 @@
+<nav id="sidebar" [class.show]="isSidebarOpen()" class="sidebar p-3">
+  <ul class="nav flex-column mt-3">
+    <li class="nav-item mb-2">
+      <a
+        class="nav-link"
+        [routerLink]="getRoutePath('dashboard')"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a class="nav-link" [routerLink]="getRoutePath('produccion')" routerLinkActive="active">
+        <i class="bi bi-bar-chart me-2"></i>Producción
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a class="nav-link" [routerLink]="getRoutePath('consumo')" routerLinkActive="active">
+        <i class="bi bi-lightning me-2"></i>Consumo
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a class="nav-link" [routerLink]="getRoutePath('capacidad')" routerLinkActive="active">
+        <i class="bi bi-building me-2"></i>Capacidad Instalada
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a class="nav-link" [routerLink]="getRoutePath('comparativas')" routerLinkActive="active">
+        <i class="bi bi-graph-up me-2"></i>Comparativas
+      </a>
+    </li>
+    <hr class="text-secondary" />
+    <small class="text-uppercase text-muted">Admin</small>
+    <li class="nav-item mt-2">
+      <a class="nav-link" href="#"> <i class="bi bi-gear me-2"></i>Gestión de Datos </a>
+    </li>
+  </ul>
+</nav>

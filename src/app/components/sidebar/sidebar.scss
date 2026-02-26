@@ -1,0 +1,33 @@
+.sidebar {
+  min-height: 100vh;
+  background-color: #2f3e4d;
+}
+
+.nav-link {
+  color: #cfd8dc;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.nav-link.active {
+  background-color: #3f5368;
+  color: #fff;
+  border-radius: 6px;
+}
+
+@media (max-width: 991px) {
+  .sidebar {
+    position: fixed;
+    width: 250px;
+    left: -250px;
+    transition: all 0.3s;
+    z-index: 1000;
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+}

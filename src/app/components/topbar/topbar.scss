@@ -1,0 +1,26 @@
+.logo {
+  max-width: 38px;
+  margin-right: 15px;
+}
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+}
+
+.dropdown-toggle::after {
+  vertical-align: middle;
+}
+
+.title-responsive {
+  font-size: 1.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 576px) {
+  .title-responsive {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,19 @@
+<div class="d-flex flex-column" style="min-height: 100vh">
+  <!-- Topbar -->
+  <app-topbar (toggleMenu)="toggleSidebar()"></app-topbar>
+
+  <div class="d-flex flex-grow-1 position-relative">
+    <!-- Overlay -->
+    <ng-container *ngIf="isSidebarOpen()">
+      <div class="sidebar-overlay d-lg-none" (click)="toggleSidebar()"></div>
+    </ng-container>
+
+    <!-- Sidebar -->
+    <app-sidebar [isSidebarOpen]="isSidebarOpen()"></app-sidebar>
+
+    <!-- Main Content -->
+    <main class="main-content px-4 py-4">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
