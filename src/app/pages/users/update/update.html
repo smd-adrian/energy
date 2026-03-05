@@ -1,0 +1,87 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Editar usuario</h2>
+      <p class="text-muted mb-0">Actualiza la información del usuario seleccionado.</p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToUsers()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  @if (isLoading()) {
+    <div class="placeholder-glow">
+      <span class="placeholder col-8 d-block mb-2"></span>
+      <span class="placeholder col-6 d-block mb-2"></span>
+      <span class="placeholder col-7 d-block mb-2"></span>
+    </div>
+  } @else {
+    <form [formGroup]="updateUserForm" (ngSubmit)="submitUpdateUser()" novalidate>
+      @if (updateUserError()) {
+        <div class="alert alert-danger" role="alert">{{ updateUserError() }}</div>
+      }
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Nombre de usuario</label>
+        <input id="username" type="text" class="form-control" formControlName="username" />
+        @if (updateUserForm.controls.username.touched && updateUserForm.controls.username.invalid) {
+          <small class="text-danger">Mínimo 3 caracteres.</small>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" type="email" class="form-control" formControlName="email" />
+        @if (
+          updateUserForm.controls.email.touched &&
+          updateUserForm.controls.email.errors?.['required']
+        ) {
+          <small class="text-danger">El email es obligatorio.</small>
+        }
+        @if (
+          updateUserForm.controls.email.touched && updateUserForm.controls.email.errors?.['email']
+        ) {
+          <small class="text-danger">Ingresa un email válido.</small>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input id="password" type="password" class="form-control" formControlName="password" />
+        @if (
+          updateUserForm.controls.password.touched &&
+          updateUserForm.controls.password.errors?.['minlength']
+        ) {
+          <small class="text-danger"
+            >Si deseas cambiarla, la contraseña debe tener mínimo 6 caracteres.</small
+          >
+        }
+      </div>
+
+      <div class="mb-4">
+        <label for="role" class="form-label">Rol</label>
+        <select id="role" class="form-select" formControlName="role">
+          <option value="USER">Usuario</option>
+          <option value="ADMIN">Administrador</option>
+          <option value="ANALYST">Analista</option>
+        </select>
+        @if (updateUserForm.controls.role.touched && updateUserForm.controls.role.invalid) {
+          <small class="text-danger">El rol es obligatorio.</small>
+        }
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="button" class="btn btn-secondary" (click)="goBackToUsers()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            Guardando cambios...
+          } @else {
+            Actualizar usuario
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>

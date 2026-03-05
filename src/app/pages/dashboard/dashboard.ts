@@ -1,8 +1,15 @@
-import { Component, OnInit, signal, ChangeDetectionStrategy, inject, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  ChangeDetectionStrategy,
+  inject,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EnergyService } from '../../services/energy.service';
-import { Metric, RegionalData, ChartData, Filter } from '../../models/energy.model';
+import { Metric, RegionalData, ChartData, Filter } from '../../models/dashboard.model';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -15,11 +22,11 @@ import Chart from 'chart.js/auto';
 export class Dashboard implements OnInit, AfterViewInit {
   private energyService = inject(EnergyService);
   private chartInstance: any = null;
-  
+
   metrics = signal<Metric[]>([]);
   regionalData = signal<RegionalData[]>([]);
   chartData = signal<ChartData | null>(null);
-  
+
   selectedYear = '2024';
   selectedRegion = 'Global';
   selectedSource = 'Todas';
@@ -37,17 +44,17 @@ export class Dashboard implements OnInit, AfterViewInit {
 
   loadDashboardData() {
     // Cargar métricas
-    this.energyService.getMetrics().subscribe(data => {
+    this.energyService.getMetrics().subscribe((data) => {
       this.metrics.set(data);
     });
 
     // Cargar datos regionales
-    this.energyService.getRegionalData().subscribe(data => {
+    this.energyService.getRegionalData().subscribe((data) => {
       this.regionalData.set(data);
     });
 
     // Cargar datos del gráfico
-    this.energyService.getEnergyProductionChart().subscribe(data => {
+    this.energyService.getEnergyProductionChart().subscribe((data) => {
       this.chartData.set(data);
     });
   }
@@ -56,9 +63,9 @@ export class Dashboard implements OnInit, AfterViewInit {
     const filters: Filter = {
       year: this.selectedYear,
       region: this.selectedRegion,
-      source: this.selectedSource
+      source: this.selectedSource,
     };
-    
+
     this.energyService.applyFilters(filters).subscribe(() => {
       this.loadDashboardData();
       setTimeout(() => {
@@ -70,7 +77,7 @@ export class Dashboard implements OnInit, AfterViewInit {
   private initChart() {
     const canvas = document.getElementById('energyChart') as HTMLCanvasElement;
     const data = this.chartData();
-    
+
     if (canvas && data) {
       // Destruir gráfico anterior si existe
       if (this.chartInstance) {
@@ -89,23 +96,23 @@ export class Dashboard implements OnInit, AfterViewInit {
               borderColor: this.getChartColor(index),
               backgroundColor: this.getChartBackgroundColor(index),
               tension: 0.4,
-              fill: false
-            }))
+              fill: false,
+            })),
           },
           options: {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
               legend: {
-                position: 'top' as const
-              }
+                position: 'top' as const,
+              },
             },
             scales: {
               y: {
-                beginAtZero: true
-              }
-            }
-          }
+                beginAtZero: true,
+              },
+            },
+          },
         });
       }
     }
@@ -117,7 +124,12 @@ export class Dashboard implements OnInit, AfterViewInit {
   }
 
   private getChartBackgroundColor(index: number): string {
-    const colors = ['rgba(255, 99, 132, 0.1)', 'rgba(54, 162, 235, 0.1)', 'rgba(255, 206, 86, 0.1)', 'rgba(75, 192, 192, 0.1)'];
+    const colors = [
+      'rgba(255, 99, 132, 0.1)',
+      'rgba(54, 162, 235, 0.1)',
+      'rgba(255, 206, 86, 0.1)',
+      'rgba(75, 192, 192, 0.1)',
+    ];
     return colors[index % colors.length];
   }
 }

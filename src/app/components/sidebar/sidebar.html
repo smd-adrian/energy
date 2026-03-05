@@ -31,8 +31,13 @@
       </a>
     </li>
     <hr class="text-secondary" />
-    <small class="text-uppercase text-muted">Admin</small>
-    <li class="nav-item mt-2">
+    <small class="text-uppercase text-muted mb-2">Admin</small>
+    <li class="nav-item mb-2">
+      <a class="nav-link" [routerLink]="getRoutePath('users')" routerLinkActive="active">
+        <i class="bi bi-people me-2"></i>Gestión de Usuarios
+      </a>
+    </li>
+    <li class="nav-item mb-2">
       <a class="nav-link" href="#"> <i class="bi bi-gear me-2"></i>Gestión de Datos </a>
     </li>
   </ul>

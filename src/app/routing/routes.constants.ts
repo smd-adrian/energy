@@ -1,8 +1,19 @@
-
 export const NAMED_ROUTES = {
   dashboard: {
     name: 'dashboard',
     path: 'dashboard',
+  },
+  users: {
+    name: 'users',
+    path: 'usuarios',
+  },
+  usersCreate: {
+    name: 'usersCreate',
+    path: 'usuarios/crear',
+  },
+  usersUpdate: {
+    name: 'usersUpdate',
+    path: 'usuarios/editar',
   },
   produccion: {
     name: 'produccion',
@@ -29,4 +40,8 @@ export const NAMED_ROUTES = {
  */
 export function getRoutePath(routeName: keyof typeof NAMED_ROUTES): string {
   return '/' + NAMED_ROUTES[routeName].path;
+}
+
+export function getUserUpdatePath(id: number): string {
+  return `/${NAMED_ROUTES.usersUpdate.path}/${id}`;
 }
