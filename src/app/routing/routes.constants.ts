@@ -15,6 +15,30 @@ export const NAMED_ROUTES = {
     name: 'usersUpdate',
     path: 'usuarios/editar',
   },
+  countries: {
+    name: 'countries',
+    path: 'paises',
+  },
+  countriesCreate: {
+    name: 'countriesCreate',
+    path: 'paises/crear',
+  },
+  countriesUpdate: {
+    name: 'countriesUpdate',
+    path: 'paises/editar',
+  },
+  regions: {
+    name: 'regions',
+    path: 'regiones',
+  },
+  regionsCreate: {
+    name: 'regionsCreate',
+    path: 'regiones/crear',
+  },
+  regionsUpdate: {
+    name: 'regionsUpdate',
+    path: 'regiones/editar',
+  },
   produccion: {
     name: 'produccion',
     path: 'produccion',
@@ -44,4 +68,12 @@ export function getRoutePath(routeName: keyof typeof NAMED_ROUTES): string {
 
 export function getUserUpdatePath(id: number): string {
   return `/${NAMED_ROUTES.usersUpdate.path}/${id}`;
+}
+
+export function getCountryUpdatePath(id: number): string {
+  return `/${NAMED_ROUTES.countriesUpdate.path}/${id}`;
+}
+
+export function getRegionUpdatePath(id: number): string {
+  return `/${NAMED_ROUTES.regionsUpdate.path}/${id}`;
 }

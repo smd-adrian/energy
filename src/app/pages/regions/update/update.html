@@ -1,0 +1,72 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Editar región</h2>
+      <p class="text-muted mb-0">Actualiza la información de la región seleccionada.</p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToRegions()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  @if (isLoading()) {
+    <div class="placeholder-glow">
+      <span class="placeholder col-8 d-block mb-2"></span>
+      <span class="placeholder col-6 d-block mb-2"></span>
+      <span class="placeholder col-7 d-block mb-2"></span>
+    </div>
+  } @else {
+    <form [formGroup]="updateRegionForm" (ngSubmit)="submitUpdateRegion()" novalidate>
+      @if (updateRegionError()) {
+        <div class="alert alert-danger" role="alert">{{ updateRegionError() }}</div>
+      }
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre de la región</label>
+        <input id="name" type="text" class="form-control" formControlName="name" />
+        @if (
+          updateRegionForm.controls.name.touched &&
+          updateRegionForm.controls.name.errors?.['required']
+        ) {
+          <small class="text-danger">El nombre es obligatorio.</small>
+        }
+        @if (
+          updateRegionForm.controls.name.touched &&
+          updateRegionForm.controls.name.errors?.['minlength']
+        ) {
+          <small class="text-danger">El nombre debe tener mínimo 2 caracteres.</small>
+        }
+      </div>
+
+      <div class="mb-4">
+        <label for="countryId" class="form-label">País</label>
+        <select id="countryId" class="form-select" formControlName="countryId">
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (country of countries(); track country.id) {
+            <option [value]="country.id">{{ country.name }}</option>
+          }
+        </select>
+        @if (
+          updateRegionForm.controls.countryId.touched && updateRegionForm.controls.countryId.invalid
+        ) {
+          <small class="text-danger">Debes seleccionar un país.</small>
+        }
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="button" class="btn btn-secondary" (click)="goBackToRegions()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            Guardando cambios...
+          } @else {
+            Actualizar región
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>

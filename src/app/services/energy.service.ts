@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Metric, RegionalData, ChartData, Filter } from '../models/dashboard.model';
 import { Users, UserUpsertRequest } from '../models/users.model';
+import { Country, CountryUpsertRequest } from '../models/countries.model';
+import { Region, RegionUpsertRequest } from '../models/regions.model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +32,46 @@ export class EnergyService {
 
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/users/${id}`);
+  }
+
+  getCountries(): Observable<Country[]> {
+    return this.http.get<Country[]>(`${this.apiUrl}/countrys`);
+  }
+
+  getCountryById(id: number): Observable<Country> {
+    return this.http.get<Country>(`${this.apiUrl}/countrys/${id}`);
+  }
+
+  createCountry(country: CountryUpsertRequest): Observable<Country> {
+    return this.http.post<Country>(`${this.apiUrl}/countrys`, country);
+  }
+
+  updateCountry(id: number, country: CountryUpsertRequest): Observable<Country> {
+    return this.http.put<Country>(`${this.apiUrl}/countrys/${id}`, country);
+  }
+
+  deleteCountry(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/countrys/${id}`);
+  }
+
+  getRegions(): Observable<Region[]> {
+    return this.http.get<Region[]>(`${this.apiUrl}/regions`);
+  }
+
+  getRegionById(id: number): Observable<Region> {
+    return this.http.get<Region>(`${this.apiUrl}/regions/${id}`);
+  }
+
+  createRegion(region: RegionUpsertRequest): Observable<Region> {
+    return this.http.post<Region>(`${this.apiUrl}/regions`, region);
+  }
+
+  updateRegion(id: number, region: RegionUpsertRequest): Observable<Region> {
+    return this.http.put<Region>(`${this.apiUrl}/regions/${id}`, region);
+  }
+
+  deleteRegion(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/regions/${id}`);
   }
 
   /**

@@ -1,55 +1,54 @@
 <div class="bg-white shadow-sm rounded p-4 mb-4">
   <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
     <div>
-      <h2 class="fw-bold fs-2 mb-1">Gestión de usuarios</h2>
-      <p class="text-muted mb-0">Ver y administrar los usuarios del sistema.</p>
+      <h2 class="fw-bold fs-2 mb-1">Gestión de regiones</h2>
+      <p class="text-muted mb-0">Ver y administrar las regiones del sistema.</p>
     </div>
-    <a [routerLink]="createUserPath" class="btn btn-success">Nuevo usuario</a>
+    <button type="button" class="btn btn-success" (click)="navigateToCreate()">Nueva región</button>
   </div>
 </div>
 
 <div class="bg-white shadow-sm rounded p-4 mb-4">
   <div class="card-body">
-    <h5 class="mb-3">Resumen de Usuarios</h5>
-    @if (users().length) {
+    <h5 class="mb-3">Resumen de Regiones</h5>
+    @if (regions().length) {
       <div class="table-responsive">
-        <table class="table table-hover align-middle users-table">
+        <table class="table table-hover align-middle regions-table">
           <thead class="table-light">
             <tr>
               <th>ID</th>
-              <th>Nombre de Usuario</th>
-              <th>Email</th>
-              <th>Rol</th>
+              <th>Nombre</th>
+              <th>País</th>
               <th class="text-end">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            @for (user of pagination.paginatedItems(); track user.id) {
+            @for (region of pagination.paginatedItems(); track region.id) {
               <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td class="text-success fw-bold">{{ user.role }}</td>
+                <td>{{ region.id }}</td>
+                <td>{{ region.name }}</td>
+                <td>{{ region.country.name }}</td>
                 <td>
-                  <div class="d-flex justify-content-end flex-wrap gap-2 user-actions">
-                    <a
-                      [routerLink]="getUpdatePath(user.id)"
+                  <div class="d-flex justify-content-end flex-wrap gap-2 region-actions">
+                    <button
+                      type="button"
                       class="btn btn-sm btn-outline-primary action-icon-btn"
                       title="Editar"
-                      aria-label="Editar usuario"
+                      aria-label="Editar región"
+                      (click)="navigateToUpdate(region.id)"
                     >
                       <i class="bi bi-pencil" aria-hidden="true"></i>
                       <span class="visually-hidden">Editar</span>
-                    </a>
+                    </button>
                     <button
                       type="button"
                       class="btn btn-sm btn-outline-danger action-icon-btn"
                       title="Eliminar"
-                      aria-label="Eliminar usuario"
-                      [disabled]="isDeletingUserId() === user.id"
-                      (click)="onDeleteUser(user)"
+                      aria-label="Eliminar región"
+                      [disabled]="isDeletingRegionId() === region.id"
+                      (click)="onDeleteRegion(region)"
                     >
-                      @if (isDeletingUserId() === user.id) {
+                      @if (isDeletingRegionId() === region.id) {
                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                         <span class="visually-hidden">Eliminando</span>
                       } @else {
@@ -68,11 +67,15 @@
       <div
         class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 mt-3"
       >
-        <small class="text-muted">Total: {{ pagination.totalItems() }} usuarios</small>
-        <nav aria-label="Paginación usuarios">
+        <small class="text-muted">Total: {{ pagination.totalItems() }} regiones</small>
+        <nav aria-label="Paginación regiones">
           <ul class="pagination pagination-sm mb-0">
             <li class="page-item" [class.disabled]="pagination.page() === 1">
-              <button class="page-link" type="button" (click)="pagination.goToPage(pagination.page() - 1)">
+              <button
+                class="page-link"
+                type="button"
+                (click)="pagination.goToPage(pagination.page() - 1)"
+              >
                 Anterior
               </button>
             </li>
@@ -101,14 +104,22 @@
 
             @if (pagination.showLastPage()) {
               <li class="page-item">
-                <button class="page-link" type="button" (click)="pagination.goToPage(pagination.totalPages())">
+                <button
+                  class="page-link"
+                  type="button"
+                  (click)="pagination.goToPage(pagination.totalPages())"
+                >
                   {{ pagination.totalPages() }}
                 </button>
               </li>
             }
 
             <li class="page-item" [class.disabled]="pagination.page() === pagination.totalPages()">
-              <button class="page-link" type="button" (click)="pagination.goToPage(pagination.page() + 1)">
+              <button
+                class="page-link"
+                type="button"
+                (click)="pagination.goToPage(pagination.page() + 1)"
+              >
                 Siguiente
               </button>
             </li>
@@ -119,9 +130,7 @@
       <p class="card-text placeholder-glow">
         <span class="placeholder col-7"></span>
         <span class="placeholder col-4"></span>
-        <span class="placeholder col-4"></span>
         <span class="placeholder col-6"></span>
-        <span class="placeholder col-8"></span>
       </p>
     }
   </div>

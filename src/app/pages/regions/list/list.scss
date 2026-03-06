@@ -1,8 +1,8 @@
-.users-table {
+.regions-table {
   font-size: 0.98rem;
 }
 
-.user-actions {
+.region-actions {
   min-width: 88px;
 }
 
@@ -16,7 +16,7 @@
 }
 
 @media (max-width: 576px) {
-  .user-actions {
+  .region-actions {
     min-width: auto;
     justify-content: flex-start !important;
   }

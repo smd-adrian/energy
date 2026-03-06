@@ -1,8 +1,14 @@
-.users-table {
+.countries-table-shell {
+  margin: 0 auto;
+}
+
+.countries-table {
+  margin-bottom: 0;
+  min-width: 560px;
   font-size: 0.98rem;
 }
 
-.user-actions {
+.country-actions {
   min-width: 88px;
 }
 
@@ -16,7 +22,11 @@
 }
 
 @media (max-width: 576px) {
-  .user-actions {
+  .countries-table {
+    min-width: 100%;
+  }
+
+  .country-actions {
     min-width: auto;
     justify-content: flex-start !important;
   }

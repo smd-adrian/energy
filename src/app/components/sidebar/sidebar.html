@@ -38,6 +38,16 @@
       </a>
     </li>
     <li class="nav-item mb-2">
+      <a class="nav-link" [routerLink]="getRoutePath('countries')" routerLinkActive="active">
+        <i class="bi bi-globe-americas me-2"></i>Gestión de Países
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a class="nav-link" [routerLink]="getRoutePath('regions')" routerLinkActive="active">
+        <i class="bi bi-map me-2"></i>Gestión de Regiones
+      </a>
+    </li>
+    <li class="nav-item mb-2">
       <a class="nav-link" href="#"> <i class="bi bi-gear me-2"></i>Gestión de Datos </a>
     </li>
   </ul>

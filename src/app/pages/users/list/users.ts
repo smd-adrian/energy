@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { EnergyService } from '../../../services/energy.service';
 import { Users as UsersData } from '../../../models/users.model';
 import { getRoutePath, getUserUpdatePath } from '../../../routing/routes.constants';
+import { createPagination } from '../../../shared/pagination/pagination';
 
 @Component({
   selector: 'app-users',
@@ -17,6 +18,8 @@ export class Users implements OnInit {
   private energyService = inject(EnergyService);
 
   users = signal<UsersData[]>([]);
+  pagination = createPagination(this.users, { pageSize: 10, maxVisiblePages: 5 });
+
   isDeletingUserId = signal<number | null>(null);
   createUserPath = getRoutePath('usersCreate');
 
@@ -27,6 +30,7 @@ export class Users implements OnInit {
   loadUsersData() {
     this.energyService.getUsers().subscribe((users) => {
       this.users.set(users);
+      this.pagination.syncCurrentPage();
     });
   }
 
@@ -59,6 +63,7 @@ export class Users implements OnInit {
           this.users.update((currentUsers) =>
             currentUsers.filter((currentUser) => currentUser.id !== user.id),
           );
+          this.pagination.syncCurrentPage();
 
           await Swal.fire({
             icon: 'success',
