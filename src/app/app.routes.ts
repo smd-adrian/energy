@@ -19,6 +19,11 @@ import { Create as EnergyTypesCreate } from './pages/energytypes/create/create';
 import { Update as EnergyTypesUpdate } from './pages/energytypes/update/update';
 import { List as PowerPlantsList } from './pages/powerplants/list/list';
 import { Create as PowerPlantsCreate } from './pages/powerplants/create/create';
+import { List as MeasurementTypesList } from './pages/measurementtypes/list/list';
+import { Create as MeasurementTypesCreate } from './pages/measurementtypes/create/create';
+import { List as EnergyRecordsList } from './pages/energyrecords/list/list';
+import { Create as EnergyRecordsCreate } from './pages/energyrecords/create/create';
+import { Update as EnergyRecordsUpdate } from './pages/energyrecords/update/update';
 
 export const routes: Routes = [
   {
@@ -96,6 +101,26 @@ export const routes: Routes = [
       {
         path: NAMED_ROUTES.powerPlantsCreate.path,
         component: PowerPlantsCreate,
+      },
+      {
+        path: NAMED_ROUTES.measurementTypes.path,
+        component: MeasurementTypesList,
+      },
+      {
+        path: NAMED_ROUTES.measurementTypesCreate.path,
+        component: MeasurementTypesCreate,
+      },
+      {
+        path: NAMED_ROUTES.energyRecords.path,
+        component: EnergyRecordsList,
+      },
+      {
+        path: NAMED_ROUTES.energyRecordsCreate.path,
+        component: EnergyRecordsCreate,
+      },
+      {
+        path: `${NAMED_ROUTES.energyRecordsUpdate.path}/:id`,
+        component: EnergyRecordsUpdate,
       },
       {
         path: '',

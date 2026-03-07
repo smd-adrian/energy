@@ -8,6 +8,8 @@ import { Region, RegionUpsertRequest } from '../models/regions.model';
 import { Company, CompanyUpsertRequest } from '../models/companies.model';
 import { EnergyType, EnergyTypeUpsertRequest } from '../models/energytypes.model';
 import { PowerPlant, PowerPlantUpsertRequest } from '../models/powerplants.model';
+import { MeasurementType, MeasurementTypeUpsertRequest } from '../models/measurementtypes.model';
+import { EnergyRecord, EnergyRecordUpsertRequest } from '../models/energyrecords.model';
 
 @Injectable({
   providedIn: 'root',
@@ -123,6 +125,39 @@ export class EnergyService {
 
   createPowerPlant(powerPlant: PowerPlantUpsertRequest): Observable<PowerPlant> {
     return this.http.post<PowerPlant>(`${this.apiUrl}/powerplants`, powerPlant);
+  }
+
+  getMeasurementTypes(): Observable<MeasurementType[]> {
+    return this.http.get<MeasurementType[]>(`${this.apiUrl}/measurementypes`);
+  }
+
+  createMeasurementType(
+    measurementType: MeasurementTypeUpsertRequest,
+  ): Observable<MeasurementType> {
+    return this.http.post<MeasurementType>(`${this.apiUrl}/measurementypes`, measurementType);
+  }
+
+  getEnergyRecords(): Observable<EnergyRecord[]> {
+    return this.http.get<EnergyRecord[]>(`${this.apiUrl}/energyrecords`);
+  }
+
+  getEnergyRecordById(id: number): Observable<EnergyRecord> {
+    return this.http.get<EnergyRecord>(`${this.apiUrl}/energyrecords/${id}`);
+  }
+
+  createEnergyRecord(energyRecord: EnergyRecordUpsertRequest): Observable<EnergyRecord> {
+    return this.http.post<EnergyRecord>(`${this.apiUrl}/energyrecords`, energyRecord);
+  }
+
+  updateEnergyRecord(
+    id: number,
+    energyRecord: EnergyRecordUpsertRequest,
+  ): Observable<EnergyRecord> {
+    return this.http.put<EnergyRecord>(`${this.apiUrl}/energyrecords/${id}`, energyRecord);
+  }
+
+  deleteEnergyRecord(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/energyrecords/${id}`);
   }
 
   /**

@@ -1,0 +1,147 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Registros de energía</h2>
+      <p class="text-muted mb-0">Gestiona los registros base para reportes energéticos.</p>
+    </div>
+    <button type="button" class="btn btn-success" (click)="navigateToCreate()">
+      Nuevo registro
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="card-body">
+    <h5 class="mb-3">Resumen de Registros</h5>
+    @if (energyRecords().length) {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle energy-records-table">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Año</th>
+              <th>Mes</th>
+              <th>Valor</th>
+              <th>Power Plant</th>
+              <th>Tipo de medición</th>
+              <th>Unidad</th>
+              <th class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (energyRecord of pagination.paginatedItems(); track energyRecord.id) {
+              <tr>
+                <td>{{ energyRecord.id }}</td>
+                <td>{{ energyRecord.year }}</td>
+                <td>{{ energyRecord.month }}</td>
+                <td>{{ energyRecord.value }}</td>
+                <td>{{ energyRecord.powerPlant.name }}</td>
+                <td>{{ energyRecord.measurementType.name }}</td>
+                <td>{{ energyRecord.measurementType.unit }}</td>
+                <td>
+                  <div class="d-flex justify-content-end flex-wrap gap-2 energy-record-actions">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary action-icon-btn"
+                      title="Editar"
+                      aria-label="Editar registro"
+                      (click)="navigateToUpdate(energyRecord.id)"
+                    >
+                      <i class="bi bi-pencil" aria-hidden="true"></i>
+                      <span class="visually-hidden">Editar</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-danger action-icon-btn"
+                      title="Eliminar"
+                      aria-label="Eliminar registro"
+                      [disabled]="isDeletingEnergyRecordId() === energyRecord.id"
+                      (click)="onDeleteEnergyRecord(energyRecord)"
+                    >
+                      @if (isDeletingEnergyRecordId() === energyRecord.id) {
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span class="visually-hidden">Eliminando</span>
+                      } @else {
+                        <i class="bi bi-trash" aria-hidden="true"></i>
+                        <span class="visually-hidden">Eliminar</span>
+                      }
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div
+        class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 mt-3"
+      >
+        <small class="text-muted">Total: {{ pagination.totalItems() }} registros</small>
+        <nav aria-label="Paginación registros de energía">
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="pagination.page() === 1">
+              <button
+                class="page-link"
+                type="button"
+                (click)="pagination.goToPage(pagination.page() - 1)"
+              >
+                Anterior
+              </button>
+            </li>
+
+            @if (pagination.showFirstPage()) {
+              <li class="page-item">
+                <button class="page-link" type="button" (click)="pagination.goToPage(1)">1</button>
+              </li>
+            }
+
+            @if (pagination.showLeftEllipsis()) {
+              <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+
+            @for (pageNumber of pagination.visiblePageNumbers(); track pageNumber) {
+              <li class="page-item" [class.active]="pagination.page() === pageNumber">
+                <button class="page-link" type="button" (click)="pagination.goToPage(pageNumber)">
+                  {{ pageNumber }}
+                </button>
+              </li>
+            }
+
+            @if (pagination.showRightEllipsis()) {
+              <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+
+            @if (pagination.showLastPage()) {
+              <li class="page-item">
+                <button
+                  class="page-link"
+                  type="button"
+                  (click)="pagination.goToPage(pagination.totalPages())"
+                >
+                  {{ pagination.totalPages() }}
+                </button>
+              </li>
+            }
+
+            <li class="page-item" [class.disabled]="pagination.page() === pagination.totalPages()">
+              <button
+                class="page-link"
+                type="button"
+                (click)="pagination.goToPage(pagination.page() + 1)"
+              >
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    } @else {
+      <p class="card-text placeholder-glow">
+        <span class="placeholder col-7"></span>
+        <span class="placeholder col-4"></span>
+        <span class="placeholder col-6"></span>
+      </p>
+    }
+  </div>
+</div>

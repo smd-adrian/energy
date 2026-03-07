@@ -71,6 +71,26 @@ export const NAMED_ROUTES = {
     name: 'powerPlantsCreate',
     path: 'plantas-energia/crear',
   },
+  measurementTypes: {
+    name: 'measurementTypes',
+    path: 'tipos-medicion',
+  },
+  measurementTypesCreate: {
+    name: 'measurementTypesCreate',
+    path: 'tipos-medicion/crear',
+  },
+  energyRecords: {
+    name: 'energyRecords',
+    path: 'registros-energia',
+  },
+  energyRecordsCreate: {
+    name: 'energyRecordsCreate',
+    path: 'registros-energia/crear',
+  },
+  energyRecordsUpdate: {
+    name: 'energyRecordsUpdate',
+    path: 'registros-energia/editar',
+  },
   produccion: {
     name: 'produccion',
     path: 'produccion',
@@ -116,4 +136,8 @@ export function getCompanyUpdatePath(id: number): string {
 
 export function getEnergyTypeUpdatePath(id: number): string {
   return `/${NAMED_ROUTES.energyTypesUpdate.path}/${id}`;
+}
+
+export function getEnergyRecordUpdatePath(id: number): string {
+  return `/${NAMED_ROUTES.energyRecordsUpdate.path}/${id}`;
 }

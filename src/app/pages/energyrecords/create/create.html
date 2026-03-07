@@ -1,0 +1,164 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Crear registro de energía</h2>
+      <p class="text-muted mb-0">
+        Este formulario alimenta la base de reportes energéticos del sistema.
+      </p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToEnergyRecords()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <form [formGroup]="createEnergyRecordForm" (ngSubmit)="submitCreateEnergyRecord()" novalidate>
+    @if (optionsLoadError()) {
+      <div class="alert alert-warning" role="alert">{{ optionsLoadError() }}</div>
+    }
+
+    @if (createEnergyRecordError()) {
+      <div class="alert alert-danger" role="alert">{{ createEnergyRecordError() }}</div>
+    }
+
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-4">
+        <label for="year" class="form-label">Año</label>
+        <input
+          id="year"
+          type="number"
+          class="form-control"
+          formControlName="year"
+          min="1900"
+          max="2100"
+          step="1"
+        />
+        @if (
+          createEnergyRecordForm.controls.year.touched &&
+          createEnergyRecordForm.controls.year.errors?.['required']
+        ) {
+          <small class="text-danger">El año es obligatorio.</small>
+        }
+        @if (
+          createEnergyRecordForm.controls.year.touched &&
+          (createEnergyRecordForm.controls.year.errors?.['min'] ||
+            createEnergyRecordForm.controls.year.errors?.['max'])
+        ) {
+          <small class="text-danger">El año debe estar entre 1900 y 2100.</small>
+        }
+      </div>
+
+      <div class="col-12 col-md-4">
+        <label for="month" class="form-label">Mes</label>
+        <select id="month" class="form-select" formControlName="month">
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (month of months; track month.value) {
+            <option [value]="month.value">{{ month.label }}</option>
+          }
+        </select>
+        @if (
+          createEnergyRecordForm.controls.month.touched &&
+          createEnergyRecordForm.controls.month.invalid
+        ) {
+          <small class="text-danger">Debes seleccionar un mes válido.</small>
+        }
+      </div>
+
+      <div class="col-12 col-md-4">
+        <label for="value" class="form-label">Valor energético</label>
+        <input
+          id="value"
+          type="number"
+          class="form-control"
+          formControlName="value"
+          min="0.000001"
+          step="any"
+        />
+        @if (
+          createEnergyRecordForm.controls.value.touched &&
+          createEnergyRecordForm.controls.value.errors?.['required']
+        ) {
+          <small class="text-danger">El valor es obligatorio.</small>
+        }
+        @if (
+          createEnergyRecordForm.controls.value.touched &&
+          createEnergyRecordForm.controls.value.errors?.['min']
+        ) {
+          <small class="text-danger">El valor debe ser mayor que 0.</small>
+        }
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="powerPlantId" class="form-label">Power Plant</label>
+      <select
+        id="powerPlantId"
+        class="form-select"
+        formControlName="powerPlantId"
+        [disabled]="isLoadingPowerPlants()"
+      >
+        @if (isLoadingPowerPlants()) {
+          <option [value]="0" disabled>Cargando power plants...</option>
+        } @else {
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (powerPlant of powerPlants(); track powerPlant.id) {
+            <option [value]="powerPlant.id">{{ powerPlant.name }}</option>
+          }
+        }
+      </select>
+      @if (
+        createEnergyRecordForm.controls.powerPlantId.touched &&
+        createEnergyRecordForm.controls.powerPlantId.invalid
+      ) {
+        <small class="text-danger">Debes seleccionar una power plant.</small>
+      }
+    </div>
+
+    <div class="mb-4">
+      <label for="measurementTypeId" class="form-label">Tipo de medición</label>
+      <select
+        id="measurementTypeId"
+        class="form-select"
+        formControlName="measurementTypeId"
+        [disabled]="isLoadingMeasurementTypes()"
+      >
+        @if (isLoadingMeasurementTypes()) {
+          <option [value]="0" disabled>Cargando tipos de medición...</option>
+        } @else {
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (measurementType of measurementTypes(); track measurementType.id) {
+            <option [value]="measurementType.id">
+              {{ measurementType.name }} ({{ measurementType.unit }})
+            </option>
+          }
+        }
+      </select>
+      @if (
+        createEnergyRecordForm.controls.measurementTypeId.touched &&
+        createEnergyRecordForm.controls.measurementTypeId.invalid
+      ) {
+        <small class="text-danger">Debes seleccionar un tipo de medición.</small>
+      }
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row gap-2">
+      <button type="button" class="btn btn-secondary" (click)="goBackToEnergyRecords()">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="isSubmitting() || isLoadingOptions()"
+      >
+        @if (isSubmitting()) {
+          Guardando...
+        } @else if (isLoadingOptions()) {
+          Cargando opciones...
+        } @else {
+          Crear registro
+        }
+      </button>
+    </div>
+  </form>
+</div>

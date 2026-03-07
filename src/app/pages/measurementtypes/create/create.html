@@ -1,0 +1,76 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Crear tipo de medición</h2>
+      <p class="text-muted mb-0">Completa los datos para registrar un nuevo tipo de medición.</p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToMeasurementTypes()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <form
+    [formGroup]="createMeasurementTypeForm"
+    (ngSubmit)="submitCreateMeasurementType()"
+    novalidate
+  >
+    @if (createMeasurementTypeError()) {
+      <div class="alert alert-danger" role="alert">{{ createMeasurementTypeError() }}</div>
+    }
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre</label>
+      <input id="name" type="text" class="form-control" formControlName="name" />
+      @if (
+        createMeasurementTypeForm.controls.name.touched &&
+        createMeasurementTypeForm.controls.name.errors?.['required']
+      ) {
+        <small class="text-danger">El nombre es obligatorio.</small>
+      }
+      @if (
+        createMeasurementTypeForm.controls.name.touched &&
+        createMeasurementTypeForm.controls.name.errors?.['minlength']
+      ) {
+        <small class="text-danger">El nombre debe tener mínimo 2 caracteres.</small>
+      }
+    </div>
+
+    <div class="mb-4">
+      <label for="unit" class="form-label">Unidad</label>
+      <input
+        id="unit"
+        type="text"
+        class="form-control"
+        formControlName="unit"
+        placeholder="Ej: Kwh, Mwh, Gwk"
+      />
+      @if (
+        createMeasurementTypeForm.controls.unit.touched &&
+        createMeasurementTypeForm.controls.unit.errors?.['required']
+      ) {
+        <small class="text-danger">La unidad es obligatoria.</small>
+      }
+      @if (
+        createMeasurementTypeForm.controls.unit.touched &&
+        createMeasurementTypeForm.controls.unit.errors?.['minlength']
+      ) {
+        <small class="text-danger">La unidad debe tener mínimo 2 caracteres.</small>
+      }
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row gap-2">
+      <button type="button" class="btn btn-secondary" (click)="goBackToMeasurementTypes()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn btn-success" [disabled]="isSubmitting()">
+        @if (isSubmitting()) {
+          Guardando...
+        } @else {
+          Crear tipo de medición
+        }
+      </button>
+    </div>
+  </form>
+</div>

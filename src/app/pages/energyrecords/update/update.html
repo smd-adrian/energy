@@ -1,0 +1,172 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Editar registro de energía</h2>
+      <p class="text-muted mb-0">
+        Actualiza los datos base del registro para reportes energéticos.
+      </p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToEnergyRecords()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  @if (isLoading()) {
+    <div class="placeholder-glow">
+      <span class="placeholder col-8 d-block mb-2"></span>
+      <span class="placeholder col-6 d-block mb-2"></span>
+      <span class="placeholder col-7 d-block mb-2"></span>
+    </div>
+  } @else {
+    <form [formGroup]="updateEnergyRecordForm" (ngSubmit)="submitUpdateEnergyRecord()" novalidate>
+      @if (optionsLoadError()) {
+        <div class="alert alert-warning" role="alert">{{ optionsLoadError() }}</div>
+      }
+
+      @if (updateEnergyRecordError()) {
+        <div class="alert alert-danger" role="alert">{{ updateEnergyRecordError() }}</div>
+      }
+
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-4">
+          <label for="year" class="form-label">Año</label>
+          <input
+            id="year"
+            type="number"
+            class="form-control"
+            formControlName="year"
+            min="1900"
+            max="2100"
+            step="1"
+          />
+          @if (
+            updateEnergyRecordForm.controls.year.touched &&
+            updateEnergyRecordForm.controls.year.errors?.['required']
+          ) {
+            <small class="text-danger">El año es obligatorio.</small>
+          }
+          @if (
+            updateEnergyRecordForm.controls.year.touched &&
+            (updateEnergyRecordForm.controls.year.errors?.['min'] ||
+              updateEnergyRecordForm.controls.year.errors?.['max'])
+          ) {
+            <small class="text-danger">El año debe estar entre 1900 y 2100.</small>
+          }
+        </div>
+
+        <div class="col-12 col-md-4">
+          <label for="month" class="form-label">Mes</label>
+          <select id="month" class="form-select" formControlName="month">
+            <option [value]="0" disabled>-- Seleccione --</option>
+            @for (month of months; track month.value) {
+              <option [value]="month.value">{{ month.label }}</option>
+            }
+          </select>
+          @if (
+            updateEnergyRecordForm.controls.month.touched &&
+            updateEnergyRecordForm.controls.month.invalid
+          ) {
+            <small class="text-danger">Debes seleccionar un mes válido.</small>
+          }
+        </div>
+
+        <div class="col-12 col-md-4">
+          <label for="value" class="form-label">Valor energético</label>
+          <input
+            id="value"
+            type="number"
+            class="form-control"
+            formControlName="value"
+            min="0.000001"
+            step="any"
+          />
+          @if (
+            updateEnergyRecordForm.controls.value.touched &&
+            updateEnergyRecordForm.controls.value.errors?.['required']
+          ) {
+            <small class="text-danger">El valor es obligatorio.</small>
+          }
+          @if (
+            updateEnergyRecordForm.controls.value.touched &&
+            updateEnergyRecordForm.controls.value.errors?.['min']
+          ) {
+            <small class="text-danger">El valor debe ser mayor que 0.</small>
+          }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="powerPlantId" class="form-label">Power Plant</label>
+        <select
+          id="powerPlantId"
+          class="form-select"
+          formControlName="powerPlantId"
+          [disabled]="isLoadingPowerPlants()"
+        >
+          @if (isLoadingPowerPlants()) {
+            <option [value]="0" disabled>Cargando power plants...</option>
+          } @else {
+            <option [value]="0" disabled>-- Seleccione --</option>
+            @for (powerPlant of powerPlants(); track powerPlant.id) {
+              <option [value]="powerPlant.id">{{ powerPlant.name }}</option>
+            }
+          }
+        </select>
+        @if (
+          updateEnergyRecordForm.controls.powerPlantId.touched &&
+          updateEnergyRecordForm.controls.powerPlantId.invalid
+        ) {
+          <small class="text-danger">Debes seleccionar una power plant.</small>
+        }
+      </div>
+
+      <div class="mb-4">
+        <label for="measurementTypeId" class="form-label">Tipo de medición</label>
+        <select
+          id="measurementTypeId"
+          class="form-select"
+          formControlName="measurementTypeId"
+          [disabled]="isLoadingMeasurementTypes()"
+        >
+          @if (isLoadingMeasurementTypes()) {
+            <option [value]="0" disabled>Cargando tipos de medición...</option>
+          } @else {
+            <option [value]="0" disabled>-- Seleccione --</option>
+            @for (measurementType of measurementTypes(); track measurementType.id) {
+              <option [value]="measurementType.id">
+                {{ measurementType.name }} ({{ measurementType.unit }})
+              </option>
+            }
+          }
+        </select>
+        @if (
+          updateEnergyRecordForm.controls.measurementTypeId.touched &&
+          updateEnergyRecordForm.controls.measurementTypeId.invalid
+        ) {
+          <small class="text-danger">Debes seleccionar un tipo de medición.</small>
+        }
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="button" class="btn btn-secondary" (click)="goBackToEnergyRecords()">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSubmitting() || isLoadingOptions()"
+        >
+          @if (isSubmitting()) {
+            Guardando cambios...
+          } @else if (isLoadingOptions()) {
+            Cargando opciones...
+          } @else {
+            Actualizar registro
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>

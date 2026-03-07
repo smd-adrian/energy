@@ -1,0 +1,108 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Tipos de medición</h2>
+      <p class="text-muted mb-0">Ver y administrar los tipos de medición del sistema.</p>
+    </div>
+    <button type="button" class="btn btn-success" (click)="navigateToCreate()">
+      Nuevo tipo de medición
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="card-body">
+    <h5 class="mb-3">Resumen de Tipos de Medición</h5>
+    @if (measurementTypes().length) {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle measurement-types-table">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Unidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (measurementType of pagination.paginatedItems(); track measurementType.id) {
+              <tr>
+                <td>{{ measurementType.id }}</td>
+                <td>{{ measurementType.name }}</td>
+                <td>{{ measurementType.unit }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div
+        class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2 mt-3"
+      >
+        <small class="text-muted">Total: {{ pagination.totalItems() }} tipos de medición</small>
+        <nav aria-label="Paginación tipos de medición">
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="pagination.page() === 1">
+              <button
+                class="page-link"
+                type="button"
+                (click)="pagination.goToPage(pagination.page() - 1)"
+              >
+                Anterior
+              </button>
+            </li>
+
+            @if (pagination.showFirstPage()) {
+              <li class="page-item">
+                <button class="page-link" type="button" (click)="pagination.goToPage(1)">1</button>
+              </li>
+            }
+
+            @if (pagination.showLeftEllipsis()) {
+              <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+
+            @for (pageNumber of pagination.visiblePageNumbers(); track pageNumber) {
+              <li class="page-item" [class.active]="pagination.page() === pageNumber">
+                <button class="page-link" type="button" (click)="pagination.goToPage(pageNumber)">
+                  {{ pageNumber }}
+                </button>
+              </li>
+            }
+
+            @if (pagination.showRightEllipsis()) {
+              <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+
+            @if (pagination.showLastPage()) {
+              <li class="page-item">
+                <button
+                  class="page-link"
+                  type="button"
+                  (click)="pagination.goToPage(pagination.totalPages())"
+                >
+                  {{ pagination.totalPages() }}
+                </button>
+              </li>
+            }
+
+            <li class="page-item" [class.disabled]="pagination.page() === pagination.totalPages()">
+              <button
+                class="page-link"
+                type="button"
+                (click)="pagination.goToPage(pagination.page() + 1)"
+              >
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    } @else {
+      <p class="card-text placeholder-glow">
+        <span class="placeholder col-7"></span>
+        <span class="placeholder col-4"></span>
+        <span class="placeholder col-6"></span>
+      </p>
+    }
+  </div>
+</div>
