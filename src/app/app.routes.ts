@@ -24,6 +24,7 @@ import { Create as MeasurementTypesCreate } from './pages/measurementtypes/creat
 import { List as EnergyRecordsList } from './pages/energyrecords/list/list';
 import { Create as EnergyRecordsCreate } from './pages/energyrecords/create/create';
 import { Update as EnergyRecordsUpdate } from './pages/energyrecords/update/update';
+import { Index as ProductionIndex } from './pages/production/index/index';
 
 export const routes: Routes = [
   {
@@ -121,6 +122,10 @@ export const routes: Routes = [
       {
         path: `${NAMED_ROUTES.energyRecordsUpdate.path}/:id`,
         component: EnergyRecordsUpdate,
+      },
+      {
+        path: NAMED_ROUTES.produccion.path,
+        component: ProductionIndex,
       },
       {
         path: '',

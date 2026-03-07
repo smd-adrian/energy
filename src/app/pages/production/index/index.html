@@ -1,0 +1,86 @@
+<section class="container-fluid py-3">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3"
+      >
+        <div>
+          <h5 class="mb-1">Producción renovable por región y fuente</h5>
+          <small class="text-muted">Año consultado: {{ selectedYear() }}</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+          <label for="productionYear" class="visually-hidden">Año</label>
+          <input
+            id="productionYear"
+            class="form-control"
+            type="number"
+            min="1900"
+            [value]="yearInput()"
+            (input)="onYearInput($event)"
+            aria-label="Filtrar por año"
+          />
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="applyYearFilter()"
+            [disabled]="loading()"
+          >
+            Consultar
+          </button>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="alert alert-danger py-2 mb-3" role="alert">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      @if (loading()) {
+        <div class="d-flex align-items-center gap-2 text-muted py-4">
+          <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+          <span>Cargando datos de producción...</span>
+        </div>
+      }
+
+      @if (productionData().length > 0) {
+        <div class="d-flex flex-wrap gap-4 mb-3 text-muted small">
+          <span>Total: {{ totalProduction() }}</span>
+          <span>Unidad: {{ unit() }}</span>
+          <span>Registros: {{ productionData().length }}</span>
+        </div>
+      } @else if (!loading()) {
+        <p class="text-muted mb-3">No hay datos de producción para el año seleccionado.</p>
+      }
+
+      <div class="chart-wrapper" [class.chart-hidden]="productionData().length === 0">
+        <canvas #productionChart></canvas>
+      </div>
+
+      <hr class="my-4" />
+
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3"
+      >
+        <div>
+          <h5 class="mb-1">Top 10 países con mayor producción eólica</h5>
+          <small class="text-muted">Año consultado: {{ selectedYear() }}</small>
+        </div>
+      </div>
+
+      @if (topWindCountriesData().length > 0) {
+        <div class="d-flex flex-wrap gap-4 mb-3 text-muted small">
+          <span>Unidad: {{ topWindUnit() }}</span>
+          <span>Países: {{ topWindCountriesData().length }}</span>
+        </div>
+      } @else if (!loading()) {
+        <p class="text-muted mb-3">No hay datos de producción eólica para el año seleccionado.</p>
+      }
+
+      <div class="chart-wrapper" [class.chart-hidden]="topWindCountriesData().length === 0">
+        <canvas #windTopCountriesChart></canvas>
+      </div>
+    </div>
+  </div>
+</section>

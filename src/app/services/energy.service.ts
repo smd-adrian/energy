@@ -10,6 +10,7 @@ import { EnergyType, EnergyTypeUpsertRequest } from '../models/energytypes.model
 import { PowerPlant, PowerPlantUpsertRequest } from '../models/powerplants.model';
 import { MeasurementType, MeasurementTypeUpsertRequest } from '../models/measurementtypes.model';
 import { EnergyRecord, EnergyRecordUpsertRequest } from '../models/energyrecords.model';
+import { RenewableProductionItem, TopWindCountryItem } from '../models/production.model';
 
 @Injectable({
   providedIn: 'root',
@@ -158,6 +159,18 @@ export class EnergyService {
 
   deleteEnergyRecord(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/energyrecords/${id}`);
+  }
+
+  getRenewableProductionByYear(year: number): Observable<RenewableProductionItem[]> {
+    return this.http.get<RenewableProductionItem[]>(
+      `${this.apiUrl}/energyrecords/produccion-renovable/${year}`,
+    );
+  }
+
+  getTopWindCountriesByYear(year: number): Observable<TopWindCountryItem[]> {
+    return this.http.get<TopWindCountryItem[]>(
+      `${this.apiUrl}/energyrecords/top-10-paises-eolico/${year}`,
+    );
   }
 
   /**
