@@ -114,7 +114,7 @@ export class Index implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (renewable.length === 0 && topWind.length === 0) {
-          this.errorMessage.set('No fue posible cargar datos de producción para ese año.');
+          this.errorMessage.set(`No hay datos de producción para el año ${year}.`);
         }
       },
       error: () => {
@@ -125,7 +125,7 @@ export class Index implements OnInit, AfterViewInit, OnDestroy {
         this.chartInstance = null;
         this.windTopChartInstance?.destroy();
         this.windTopChartInstance = null;
-        this.errorMessage.set('No fue posible cargar datos de producción para ese año.');
+        this.errorMessage.set(`No fue posible cargar datos de producción para el año ${year}.`);
       },
     });
   }

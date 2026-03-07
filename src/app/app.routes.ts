@@ -25,6 +25,8 @@ import { List as EnergyRecordsList } from './pages/energyrecords/list/list';
 import { Create as EnergyRecordsCreate } from './pages/energyrecords/create/create';
 import { Update as EnergyRecordsUpdate } from './pages/energyrecords/update/update';
 import { Index as ProductionIndex } from './pages/production/index/index';
+import { Index as ConsumptionIndex } from './pages/consumption/index/index';
+import { Index as CapacityIndex } from './pages/capacity/index/index';
 
 export const routes: Routes = [
   {
@@ -126,6 +128,14 @@ export const routes: Routes = [
       {
         path: NAMED_ROUTES.produccion.path,
         component: ProductionIndex,
+      },
+      {
+        path: NAMED_ROUTES.consumo.path,
+        component: ConsumptionIndex,
+      },
+      {
+        path: NAMED_ROUTES.capacidad.path,
+        component: CapacityIndex,
       },
       {
         path: '',

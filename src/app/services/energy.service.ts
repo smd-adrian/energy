@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { Metric, RegionalData, ChartData, Filter } from '../models/dashboard.model';
+import {
+  ChartData,
+  DashboardResponse,
+  Filter,
+  Metric,
+  RegionalData,
+} from '../models/dashboard.model';
 import { Users, UserUpsertRequest } from '../models/users.model';
 import { Country, CountryUpsertRequest } from '../models/countries.model';
 import { Region, RegionUpsertRequest } from '../models/regions.model';
@@ -11,6 +17,11 @@ import { PowerPlant, PowerPlantUpsertRequest } from '../models/powerplants.model
 import { MeasurementType, MeasurementTypeUpsertRequest } from '../models/measurementtypes.model';
 import { EnergyRecord, EnergyRecordUpsertRequest } from '../models/energyrecords.model';
 import { RenewableProductionItem, TopWindCountryItem } from '../models/production.model';
+import {
+  GlobalConsumptionParticipationItem,
+  RenewableConsumptionByRegionItem,
+} from '../models/consumption.model';
+import { SolarCapacityTrendItem } from '../models/capacity.model';
 
 @Injectable({
   providedIn: 'root',
@@ -171,6 +182,47 @@ export class EnergyService {
     return this.http.get<TopWindCountryItem[]>(
       `${this.apiUrl}/energyrecords/top-10-paises-eolico/${year}`,
     );
+  }
+
+  getRenewableConsumptionPercentageByYear(
+    year: number,
+  ): Observable<RenewableConsumptionByRegionItem[]> {
+    return this.http.get<RenewableConsumptionByRegionItem[]>(
+      `${this.apiUrl}/energyrecords/porcentaje-renovable/${year}`,
+    );
+  }
+
+  getGlobalConsumptionParticipationByYear(
+    year: number,
+  ): Observable<GlobalConsumptionParticipationItem[]> {
+    return this.http.get<GlobalConsumptionParticipationItem[]>(
+      `${this.apiUrl}/energyrecords/participacion-consumo/${year}`,
+    );
+  }
+
+  getSolarCapacityTrend(): Observable<SolarCapacityTrendItem[]> {
+    return this.http.get<SolarCapacityTrendItem[]>(`${this.apiUrl}/energyrecords/tendencia-solar`);
+  }
+
+  getDashboardData(filters: Filter): Observable<DashboardResponse> {
+    const params = new URLSearchParams();
+
+    if (filters.year) {
+      params.set('year', String(filters.year));
+    }
+
+    if (filters.country) {
+      params.set('country', filters.country);
+    }
+
+    if (filters.energyType) {
+      params.set('energyType', filters.energyType);
+    }
+
+    const query = params.toString();
+    const endpoint = query ? `${this.apiUrl}/dashboard?${query}` : `${this.apiUrl}/dashboard`;
+
+    return this.http.get<DashboardResponse>(endpoint);
   }
 
   /**

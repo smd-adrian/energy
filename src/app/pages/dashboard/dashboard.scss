@@ -1,4 +1,49 @@
 .metric-card {
   border: none;
   border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+
+  .card-body {
+    position: relative;
+    z-index: 1;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: -15%;
+    right: -10%;
+    bottom: -48%;
+    height: 72%;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::after {
+    left: 30%;
+    right: -35%;
+    bottom: -52%;
+    height: 76%;
+  }
+}
+
+.metric-card-production {
+  background-image: url('/images/bg-total-prod.png');
+  background-size: cover;
+  background-position: bottom center;
+}
+
+.metric-card-renewable {
+  background-image: url('/images/bg-renewable-energy.png');
+  background-size: cover;
+  background-position: bottom center;
+}
+
+.metric-card-solar {
+  background-image: url('/images/bg-solar-energy.png');
+  background-size: cover;
+  background-position: bottom center;
 }

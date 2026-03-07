@@ -4,6 +4,32 @@ export interface Metric {
   icon: string;
 }
 
+export interface DashboardKpis {
+  produccionTotal: number;
+  porcentajeRenovable: number;
+  capacidadSolar: number;
+  topPaisEolico: string;
+}
+
+export interface DashboardHistoricalSeriesItem {
+  year: number;
+  tipoEnergia: string | null;
+  valor: number;
+}
+
+export interface DashboardSummaryItem {
+  region: string;
+  produccionRenovable: number;
+  consumoTotal: number;
+  porcentaje: number | null;
+}
+
+export interface DashboardResponse {
+  kpis: DashboardKpis;
+  seriesHistorica: DashboardHistoricalSeriesItem[];
+  tablaResumen: DashboardSummaryItem[];
+}
+
 export interface RegionalData {
   region: string;
   produccion: number;
@@ -22,7 +48,7 @@ export interface Dataset {
 }
 
 export interface Filter {
-  year?: string;
-  region?: string;
-  source?: string;
+  year?: number;
+  country?: string;
+  energyType?: string | null;
 }

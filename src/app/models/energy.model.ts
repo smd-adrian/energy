@@ -4,3 +4,5 @@ export * from './energytypes.model';
 export * from './powerplants.model';
 export * from './measurementtypes.model';
 export * from './energyrecords.model';
+export * from './consumption.model';
+export * from './capacity.model';
