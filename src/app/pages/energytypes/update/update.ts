@@ -3,7 +3,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Country } from '../../../models/countries.model';
 import { EnergyService } from '../../../services/energy.service';
 import { getRoutePath } from '../../../routing/routes.constants';
 
@@ -20,15 +19,14 @@ export class Update implements OnInit {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
 
-  countries = signal<Country[]>([]);
-  regionId = signal<number | null>(null);
+  energyTypeId = signal<number | null>(null);
   isLoading = signal(true);
   isSubmitting = signal(false);
-  updateRegionError = signal<string | null>(null);
+  updateEnergyTypeError = signal<string | null>(null);
 
-  updateRegionForm = this.formBuilder.nonNullable.group({
+  updateEnergyTypeForm = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
-    countryId: [0, [Validators.min(1)]],
+    renewable: [false],
   });
 
   ngOnInit(): void {
@@ -36,80 +34,68 @@ export class Update implements OnInit {
     const parsedId = Number(idParam);
 
     if (!idParam || Number.isNaN(parsedId)) {
-      this.goBackToRegions();
+      this.goBackToEnergyTypes();
       return;
     }
 
-    this.regionId.set(parsedId);
-    this.loadCountries();
-    this.loadRegion(parsedId);
+    this.energyTypeId.set(parsedId);
+    this.loadEnergyType(parsedId);
   }
 
-  loadCountries() {
-    this.energyService.getCountries().subscribe((countries) => {
-      this.countries.set(countries);
-    });
+  goBackToEnergyTypes() {
+    this.router.navigateByUrl(getRoutePath('energyTypes'));
   }
 
-  goBackToRegions() {
-    this.router.navigateByUrl(getRoutePath('regions'));
-  }
-
-  loadRegion(id: number) {
+  loadEnergyType(id: number) {
     this.isLoading.set(true);
-    this.updateRegionError.set(null);
+    this.updateEnergyTypeError.set(null);
 
     this.energyService
-      .getRegionById(id)
+      .getEnergyTypeById(id)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: (region) => {
-          this.updateRegionForm.setValue({
-            name: region.name,
-            countryId: region.country.id,
+        next: (energyType) => {
+          this.updateEnergyTypeForm.setValue({
+            name: energyType.name,
+            renewable: energyType.renewable,
           });
         },
         error: () => {
-          this.updateRegionError.set('No se pudo cargar la información de la región.');
+          this.updateEnergyTypeError.set('No se pudo cargar la información del tipo de energía.');
         },
       });
   }
 
-  submitUpdateRegion() {
-    if (this.updateRegionForm.invalid) {
-      this.updateRegionForm.markAllAsTouched();
+  submitUpdateEnergyType() {
+    if (this.updateEnergyTypeForm.invalid) {
+      this.updateEnergyTypeForm.markAllAsTouched();
       return;
     }
 
-    const id = this.regionId();
+    const id = this.energyTypeId();
     if (id === null) {
       return;
     }
 
-    const formValue = this.updateRegionForm.getRawValue();
-
     this.isSubmitting.set(true);
-    this.updateRegionError.set(null);
+    this.updateEnergyTypeError.set(null);
 
     this.energyService
-      .updateRegion(id, {
-        name: formValue.name,
-        country: {
-          id: formValue.countryId,
-        },
-      })
+      .updateEnergyType(id, this.updateEnergyTypeForm.getRawValue())
       .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: async () => {
           await Swal.fire({
             icon: 'success',
-            title: 'Región actualizada con éxito',
+            title: 'Tipo de energía actualizado con éxito',
             confirmButtonText: 'Aceptar',
           });
-          this.goBackToRegions();
+          this.goBackToEnergyTypes();
         },
         error: () => {
-          this.updateRegionError.set('No se pudo actualizar la región. Intenta nuevamente.');
+          this.updateEnergyTypeError.set(
+            'No se pudo actualizar el tipo de energía. Intenta nuevamente.',
+          );
         },
       });
   }

@@ -1,0 +1,28 @@
+.energy-types-table {
+  font-size: 0.98rem;
+}
+
+.energy-type-actions {
+  min-width: 88px;
+}
+
+.action-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+@media (max-width: 576px) {
+  .energy-type-actions {
+    min-width: auto;
+    justify-content: flex-start !important;
+  }
+
+  :host td,
+  :host th {
+    white-space: nowrap;
+  }
+}

@@ -1,12 +1,12 @@
 import { Country } from './countries.model';
 
-export interface Region {
+export interface Company {
   id: number;
   name: string;
   country: Country;
 }
 
-export interface RegionUpsertRequest {
+export interface CompanyUpsertRequest {
   name: string;
   country: {
     id: number;

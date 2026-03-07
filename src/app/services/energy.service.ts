@@ -5,6 +5,9 @@ import { Metric, RegionalData, ChartData, Filter } from '../models/dashboard.mod
 import { Users, UserUpsertRequest } from '../models/users.model';
 import { Country, CountryUpsertRequest } from '../models/countries.model';
 import { Region, RegionUpsertRequest } from '../models/regions.model';
+import { Company, CompanyUpsertRequest } from '../models/companies.model';
+import { EnergyType, EnergyTypeUpsertRequest } from '../models/energytypes.model';
+import { PowerPlant, PowerPlantUpsertRequest } from '../models/powerplants.model';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +75,54 @@ export class EnergyService {
 
   deleteRegion(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/regions/${id}`);
+  }
+
+  getCompanies(): Observable<Company[]> {
+    return this.http.get<Company[]>(`${this.apiUrl}/companys`);
+  }
+
+  getCompanyById(id: number): Observable<Company> {
+    return this.http.get<Company>(`${this.apiUrl}/companys/${id}`);
+  }
+
+  createCompany(company: CompanyUpsertRequest): Observable<Company> {
+    return this.http.post<Company>(`${this.apiUrl}/companys`, company);
+  }
+
+  updateCompany(id: number, company: CompanyUpsertRequest): Observable<Company> {
+    return this.http.put<Company>(`${this.apiUrl}/companys/${id}`, company);
+  }
+
+  deleteCompany(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/companys/${id}`);
+  }
+
+  getEnergyTypes(): Observable<EnergyType[]> {
+    return this.http.get<EnergyType[]>(`${this.apiUrl}/energytypes`);
+  }
+
+  getEnergyTypeById(id: number): Observable<EnergyType> {
+    return this.http.get<EnergyType>(`${this.apiUrl}/energytypes/${id}`);
+  }
+
+  createEnergyType(energyType: EnergyTypeUpsertRequest): Observable<EnergyType> {
+    return this.http.post<EnergyType>(`${this.apiUrl}/energytypes`, energyType);
+  }
+
+  updateEnergyType(id: number, energyType: EnergyTypeUpsertRequest): Observable<EnergyType> {
+    return this.http.put<EnergyType>(`${this.apiUrl}/energytypes/${id}`, energyType);
+  }
+
+  deleteEnergyType(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/energytypes/${id}`);
+  }
+
+  getPowerPlants(): Observable<PowerPlant[]> {
+    return this.http.get<PowerPlant[]>(`${this.apiUrl}/powerplants`);
+  }
+
+  createPowerPlant(powerPlant: PowerPlantUpsertRequest): Observable<PowerPlant> {
+    return this.http.post<PowerPlant>(`${this.apiUrl}/powerplants`, powerPlant);
   }
 
   /**

@@ -1,0 +1,134 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Crear power plant</h2>
+      <p class="text-muted mb-0">Completa los datos para registrar una nueva planta de energía.</p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToPowerPlants()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <form [formGroup]="createPowerPlantForm" (ngSubmit)="submitCreatePowerPlant()" novalidate>
+    @if (optionsLoadError()) {
+      <div class="alert alert-warning" role="alert">{{ optionsLoadError() }}</div>
+    }
+
+    @if (createPowerPlantError()) {
+      <div class="alert alert-danger" role="alert">{{ createPowerPlantError() }}</div>
+    }
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre de la planta</label>
+      <input id="name" type="text" class="form-control" formControlName="name" />
+      @if (
+        createPowerPlantForm.controls.name.touched &&
+        createPowerPlantForm.controls.name.errors?.['required']
+      ) {
+        <small class="text-danger">El nombre es obligatorio.</small>
+      }
+      @if (
+        createPowerPlantForm.controls.name.touched &&
+        createPowerPlantForm.controls.name.errors?.['minlength']
+      ) {
+        <small class="text-danger">El nombre debe tener mínimo 2 caracteres.</small>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="companyId" class="form-label">Empresa</label>
+      <select
+        id="companyId"
+        class="form-select"
+        formControlName="companyId"
+        [disabled]="isLoadingCompanies()"
+      >
+        @if (isLoadingCompanies()) {
+          <option [value]="0" disabled>Cargando empresas...</option>
+        } @else {
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (company of companies(); track company.id) {
+            <option [value]="company.id">{{ company.name }}</option>
+          }
+        }
+      </select>
+      @if (
+        createPowerPlantForm.controls.companyId.touched &&
+        createPowerPlantForm.controls.companyId.invalid
+      ) {
+        <small class="text-danger">Debes seleccionar una empresa.</small>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="regionId" class="form-label">Región</label>
+      <select
+        id="regionId"
+        class="form-select"
+        formControlName="regionId"
+        [disabled]="isLoadingRegions()"
+      >
+        @if (isLoadingRegions()) {
+          <option [value]="0" disabled>Cargando regiones...</option>
+        } @else {
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (region of regions(); track region.id) {
+            <option [value]="region.id">{{ region.name }}</option>
+          }
+        }
+      </select>
+      @if (
+        createPowerPlantForm.controls.regionId.touched &&
+        createPowerPlantForm.controls.regionId.invalid
+      ) {
+        <small class="text-danger">Debes seleccionar una región.</small>
+      }
+    </div>
+
+    <div class="mb-4">
+      <label for="energyTypeId" class="form-label">Tipo de energía</label>
+      <select
+        id="energyTypeId"
+        class="form-select"
+        formControlName="energyTypeId"
+        [disabled]="isLoadingEnergyTypes()"
+      >
+        @if (isLoadingEnergyTypes()) {
+          <option [value]="0" disabled>Cargando tipos de energía...</option>
+        } @else {
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (energyType of energyTypes(); track energyType.id) {
+            <option [value]="energyType.id">{{ energyType.name }}</option>
+          }
+        }
+      </select>
+      @if (
+        createPowerPlantForm.controls.energyTypeId.touched &&
+        createPowerPlantForm.controls.energyTypeId.invalid
+      ) {
+        <small class="text-danger">Debes seleccionar un tipo de energía.</small>
+      }
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row gap-2">
+      <button type="button" class="btn btn-secondary" (click)="goBackToPowerPlants()">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="isSubmitting() || isLoadingOptions()"
+      >
+        @if (isSubmitting()) {
+          Guardando...
+        } @else if (isLoadingOptions()) {
+          Cargando opciones...
+        } @else {
+          Crear power plant
+        }
+      </button>
+    </div>
+  </form>
+</div>

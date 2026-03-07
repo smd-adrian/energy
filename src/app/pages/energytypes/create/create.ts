@@ -3,7 +3,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Country } from '../../../models/countries.model';
 import { EnergyService } from '../../../services/energy.service';
 import { getRoutePath } from '../../../routing/routes.constants';
 
@@ -19,59 +18,43 @@ export class Create {
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
 
-  countries = signal<Country[]>([]);
   isSubmitting = signal(false);
-  createRegionError = signal<string | null>(null);
+  createEnergyTypeError = signal<string | null>(null);
 
-  createRegionForm = this.formBuilder.nonNullable.group({
+  createEnergyTypeForm = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
-    countryId: [0, [Validators.min(1)]],
+    renewable: [false],
   });
 
-  constructor() {
-    this.loadCountries();
+  goBackToEnergyTypes() {
+    this.router.navigateByUrl(getRoutePath('energyTypes'));
   }
 
-  loadCountries() {
-    this.energyService.getCountries().subscribe((countries) => {
-      this.countries.set(countries);
-    });
-  }
-
-  goBackToRegions() {
-    this.router.navigateByUrl(getRoutePath('regions'));
-  }
-
-  submitCreateRegion() {
-    if (this.createRegionForm.invalid) {
-      this.createRegionForm.markAllAsTouched();
+  submitCreateEnergyType() {
+    if (this.createEnergyTypeForm.invalid) {
+      this.createEnergyTypeForm.markAllAsTouched();
       return;
     }
 
-    const formValue = this.createRegionForm.getRawValue();
-
     this.isSubmitting.set(true);
-    this.createRegionError.set(null);
+    this.createEnergyTypeError.set(null);
 
     this.energyService
-      .createRegion({
-        name: formValue.name,
-        country: {
-          id: formValue.countryId,
-        },
-      })
+      .createEnergyType(this.createEnergyTypeForm.getRawValue())
       .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: async () => {
           await Swal.fire({
             icon: 'success',
-            title: 'Región creada con éxito',
+            title: 'Tipo de energía creado con éxito',
             confirmButtonText: 'Aceptar',
           });
-          this.goBackToRegions();
+          this.goBackToEnergyTypes();
         },
         error: () => {
-          this.createRegionError.set('No se pudo crear la región. Intenta nuevamente.');
+          this.createEnergyTypeError.set(
+            'No se pudo crear el tipo de energía. Intenta nuevamente.',
+          );
         },
       });
   }

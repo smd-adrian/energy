@@ -21,9 +21,9 @@ export class Create {
 
   countries = signal<Country[]>([]);
   isSubmitting = signal(false);
-  createRegionError = signal<string | null>(null);
+  createCompanyError = signal<string | null>(null);
 
-  createRegionForm = this.formBuilder.nonNullable.group({
+  createCompanyForm = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     countryId: [0, [Validators.min(1)]],
   });
@@ -38,23 +38,23 @@ export class Create {
     });
   }
 
-  goBackToRegions() {
-    this.router.navigateByUrl(getRoutePath('regions'));
+  goBackToCompanies() {
+    this.router.navigateByUrl(getRoutePath('companies'));
   }
 
-  submitCreateRegion() {
-    if (this.createRegionForm.invalid) {
-      this.createRegionForm.markAllAsTouched();
+  submitCreateCompany() {
+    if (this.createCompanyForm.invalid) {
+      this.createCompanyForm.markAllAsTouched();
       return;
     }
 
-    const formValue = this.createRegionForm.getRawValue();
+    const formValue = this.createCompanyForm.getRawValue();
 
     this.isSubmitting.set(true);
-    this.createRegionError.set(null);
+    this.createCompanyError.set(null);
 
     this.energyService
-      .createRegion({
+      .createCompany({
         name: formValue.name,
         country: {
           id: formValue.countryId,
@@ -65,13 +65,13 @@ export class Create {
         next: async () => {
           await Swal.fire({
             icon: 'success',
-            title: 'Región creada con éxito',
+            title: 'Empresa creada con éxito',
             confirmButtonText: 'Aceptar',
           });
-          this.goBackToRegions();
+          this.goBackToCompanies();
         },
         error: () => {
-          this.createRegionError.set('No se pudo crear la región. Intenta nuevamente.');
+          this.createCompanyError.set('No se pudo crear la empresa. Intenta nuevamente.');
         },
       });
   }

@@ -11,6 +11,14 @@ import { Update as CountriesUpdate } from './pages/countries/update/update';
 import { List as RegionsList } from './pages/regions/list/list';
 import { Create as RegionsCreate } from './pages/regions/create/create';
 import { Update as RegionsUpdate } from './pages/regions/update/update';
+import { List as CompaniesList } from './pages/companies/list/list';
+import { Create as CompaniesCreate } from './pages/companies/create/create';
+import { Update as CompaniesUpdate } from './pages/companies/update/update';
+import { List as EnergyTypesList } from './pages/energytypes/list/list';
+import { Create as EnergyTypesCreate } from './pages/energytypes/create/create';
+import { Update as EnergyTypesUpdate } from './pages/energytypes/update/update';
+import { List as PowerPlantsList } from './pages/powerplants/list/list';
+import { Create as PowerPlantsCreate } from './pages/powerplants/create/create';
 
 export const routes: Routes = [
   {
@@ -56,6 +64,38 @@ export const routes: Routes = [
       {
         path: `${NAMED_ROUTES.regionsUpdate.path}/:id`,
         component: RegionsUpdate,
+      },
+      {
+        path: NAMED_ROUTES.companies.path,
+        component: CompaniesList,
+      },
+      {
+        path: NAMED_ROUTES.companiesCreate.path,
+        component: CompaniesCreate,
+      },
+      {
+        path: `${NAMED_ROUTES.companiesUpdate.path}/:id`,
+        component: CompaniesUpdate,
+      },
+      {
+        path: NAMED_ROUTES.energyTypes.path,
+        component: EnergyTypesList,
+      },
+      {
+        path: NAMED_ROUTES.energyTypesCreate.path,
+        component: EnergyTypesCreate,
+      },
+      {
+        path: `${NAMED_ROUTES.energyTypesUpdate.path}/:id`,
+        component: EnergyTypesUpdate,
+      },
+      {
+        path: NAMED_ROUTES.powerPlants.path,
+        component: PowerPlantsList,
+      },
+      {
+        path: NAMED_ROUTES.powerPlantsCreate.path,
+        component: PowerPlantsCreate,
       },
       {
         path: '',

@@ -1,0 +1,10 @@
+.power-plants-table {
+  font-size: 0.98rem;
+}
+
+@media (max-width: 576px) {
+  :host td,
+  :host th {
+    white-space: nowrap;
+  }
+}

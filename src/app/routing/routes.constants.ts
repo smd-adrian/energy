@@ -39,6 +39,38 @@ export const NAMED_ROUTES = {
     name: 'regionsUpdate',
     path: 'regiones/editar',
   },
+  companies: {
+    name: 'companies',
+    path: 'empresas',
+  },
+  companiesCreate: {
+    name: 'companiesCreate',
+    path: 'empresas/crear',
+  },
+  companiesUpdate: {
+    name: 'companiesUpdate',
+    path: 'empresas/editar',
+  },
+  energyTypes: {
+    name: 'energyTypes',
+    path: 'tipos-energia',
+  },
+  energyTypesCreate: {
+    name: 'energyTypesCreate',
+    path: 'tipos-energia/crear',
+  },
+  energyTypesUpdate: {
+    name: 'energyTypesUpdate',
+    path: 'tipos-energia/editar',
+  },
+  powerPlants: {
+    name: 'powerPlants',
+    path: 'plantas-energia',
+  },
+  powerPlantsCreate: {
+    name: 'powerPlantsCreate',
+    path: 'plantas-energia/crear',
+  },
   produccion: {
     name: 'produccion',
     path: 'produccion',
@@ -76,4 +108,12 @@ export function getCountryUpdatePath(id: number): string {
 
 export function getRegionUpdatePath(id: number): string {
   return `/${NAMED_ROUTES.regionsUpdate.path}/${id}`;
+}
+
+export function getCompanyUpdatePath(id: number): string {
+  return `/${NAMED_ROUTES.companiesUpdate.path}/${id}`;
+}
+
+export function getEnergyTypeUpdatePath(id: number): string {
+  return `/${NAMED_ROUTES.energyTypesUpdate.path}/${id}`;
 }

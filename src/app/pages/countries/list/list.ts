@@ -77,11 +77,7 @@ export class List implements OnInit {
           await Swal.fire({
             icon: 'success',
             title: 'País eliminado',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1800,
-            timerProgressBar: true,
+            confirmButtonText: 'Aceptar',
           });
         },
         error: async () => {

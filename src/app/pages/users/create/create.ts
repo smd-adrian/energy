@@ -49,11 +49,7 @@ export class Create {
           await Swal.fire({
             icon: 'success',
             title: 'Usuario creado con éxito',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 2500,
-            timerProgressBar: true,
+            confirmButtonText: 'Aceptar',
           });
           this.goBackToUsers();
         },

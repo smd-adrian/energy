@@ -100,11 +100,7 @@ export class Update implements OnInit {
           await Swal.fire({
             icon: 'success',
             title: 'Usuario actualizado con éxito',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1800,
-            timerProgressBar: true,
+            confirmButtonText: 'Aceptar',
           });
           this.goBackToUsers();
         },

@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@ang
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Region } from '../../../models/regions.model';
+import { EnergyType } from '../../../models/energytypes.model';
 import { EnergyService } from '../../../services/energy.service';
-import { getRegionUpdatePath, getRoutePath } from '../../../routing/routes.constants';
+import { getEnergyTypeUpdatePath, getRoutePath } from '../../../routing/routes.constants';
 import { createPagination } from '../../../shared/pagination/pagination';
 
 @Component({
@@ -18,40 +18,40 @@ export class List implements OnInit {
   private energyService = inject(EnergyService);
   private router = inject(Router);
 
-  regions = signal<Region[]>([]);
-  pagination = createPagination(this.regions, { pageSize: 10, maxVisiblePages: 5 });
+  energyTypes = signal<EnergyType[]>([]);
+  pagination = createPagination(this.energyTypes, { pageSize: 10, maxVisiblePages: 5 });
 
-  isDeletingRegionId = signal<number | null>(null);
-  createRegionPath = getRoutePath('regionsCreate');
+  isDeletingEnergyTypeId = signal<number | null>(null);
+  createEnergyTypePath = getRoutePath('energyTypesCreate');
 
   ngOnInit(): void {
-    this.loadRegions();
+    this.loadEnergyTypes();
   }
 
-  loadRegions() {
-    this.energyService.getRegions().subscribe((regions) => {
-      this.regions.set(regions);
+  loadEnergyTypes() {
+    this.energyService.getEnergyTypes().subscribe((energyTypes) => {
+      this.energyTypes.set(energyTypes);
       this.pagination.syncCurrentPage();
     });
   }
 
   getUpdatePath(id: number): string {
-    return getRegionUpdatePath(id);
+    return getEnergyTypeUpdatePath(id);
   }
 
   navigateToCreate() {
-    this.router.navigateByUrl(this.createRegionPath);
+    this.router.navigateByUrl(this.createEnergyTypePath);
   }
 
   navigateToUpdate(id: number) {
     this.router.navigateByUrl(this.getUpdatePath(id));
   }
 
-  async onDeleteRegion(region: Region) {
+  async onDeleteEnergyType(energyType: EnergyType) {
     const confirmation = await Swal.fire({
       icon: 'warning',
-      title: '¿Eliminar región?',
-      text: `Esta acción eliminará ${region.name}.`,
+      title: '¿Eliminar tipo de energía?',
+      text: `Esta acción eliminará ${energyType.name}.`,
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
@@ -62,28 +62,30 @@ export class List implements OnInit {
       return;
     }
 
-    this.isDeletingRegionId.set(region.id);
+    this.isDeletingEnergyTypeId.set(energyType.id);
 
     this.energyService
-      .deleteRegion(region.id)
-      .pipe(finalize(() => this.isDeletingRegionId.set(null)))
+      .deleteEnergyType(energyType.id)
+      .pipe(finalize(() => this.isDeletingEnergyTypeId.set(null)))
       .subscribe({
         next: async () => {
-          this.regions.update((currentRegions) =>
-            currentRegions.filter((currentRegion) => currentRegion.id !== region.id),
+          this.energyTypes.update((currentEnergyTypes) =>
+            currentEnergyTypes.filter(
+              (currentEnergyType) => currentEnergyType.id !== energyType.id,
+            ),
           );
           this.pagination.syncCurrentPage();
 
           await Swal.fire({
             icon: 'success',
-            title: 'Región eliminada',
+            title: 'Tipo de energía eliminado',
             confirmButtonText: 'Aceptar',
           });
         },
         error: async () => {
           await Swal.fire({
             icon: 'error',
-            title: 'No se pudo eliminar la región',
+            title: 'No se pudo eliminar el tipo de energía',
             text: 'Intenta nuevamente.',
           });
         },

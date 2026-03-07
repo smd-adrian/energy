@@ -46,11 +46,7 @@ export class Create {
           await Swal.fire({
             icon: 'success',
             title: 'País creado con éxito',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1800,
-            timerProgressBar: true,
+            confirmButtonText: 'Aceptar',
           });
           this.goBackToCountries();
         },

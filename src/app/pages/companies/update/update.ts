@@ -21,12 +21,12 @@ export class Update implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
 
   countries = signal<Country[]>([]);
-  regionId = signal<number | null>(null);
+  companyId = signal<number | null>(null);
   isLoading = signal(true);
   isSubmitting = signal(false);
-  updateRegionError = signal<string | null>(null);
+  updateCompanyError = signal<string | null>(null);
 
-  updateRegionForm = this.formBuilder.nonNullable.group({
+  updateCompanyForm = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     countryId: [0, [Validators.min(1)]],
   });
@@ -36,13 +36,13 @@ export class Update implements OnInit {
     const parsedId = Number(idParam);
 
     if (!idParam || Number.isNaN(parsedId)) {
-      this.goBackToRegions();
+      this.goBackToCompanies();
       return;
     }
 
-    this.regionId.set(parsedId);
+    this.companyId.set(parsedId);
     this.loadCountries();
-    this.loadRegion(parsedId);
+    this.loadCompany(parsedId);
   }
 
   loadCountries() {
@@ -51,48 +51,48 @@ export class Update implements OnInit {
     });
   }
 
-  goBackToRegions() {
-    this.router.navigateByUrl(getRoutePath('regions'));
+  goBackToCompanies() {
+    this.router.navigateByUrl(getRoutePath('companies'));
   }
 
-  loadRegion(id: number) {
+  loadCompany(id: number) {
     this.isLoading.set(true);
-    this.updateRegionError.set(null);
+    this.updateCompanyError.set(null);
 
     this.energyService
-      .getRegionById(id)
+      .getCompanyById(id)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: (region) => {
-          this.updateRegionForm.setValue({
-            name: region.name,
-            countryId: region.country.id,
+        next: (company) => {
+          this.updateCompanyForm.setValue({
+            name: company.name,
+            countryId: company.country.id,
           });
         },
         error: () => {
-          this.updateRegionError.set('No se pudo cargar la información de la región.');
+          this.updateCompanyError.set('No se pudo cargar la información de la empresa.');
         },
       });
   }
 
-  submitUpdateRegion() {
-    if (this.updateRegionForm.invalid) {
-      this.updateRegionForm.markAllAsTouched();
+  submitUpdateCompany() {
+    if (this.updateCompanyForm.invalid) {
+      this.updateCompanyForm.markAllAsTouched();
       return;
     }
 
-    const id = this.regionId();
+    const id = this.companyId();
     if (id === null) {
       return;
     }
 
-    const formValue = this.updateRegionForm.getRawValue();
+    const formValue = this.updateCompanyForm.getRawValue();
 
     this.isSubmitting.set(true);
-    this.updateRegionError.set(null);
+    this.updateCompanyError.set(null);
 
     this.energyService
-      .updateRegion(id, {
+      .updateCompany(id, {
         name: formValue.name,
         country: {
           id: formValue.countryId,
@@ -103,13 +103,13 @@ export class Update implements OnInit {
         next: async () => {
           await Swal.fire({
             icon: 'success',
-            title: 'Región actualizada con éxito',
+            title: 'Empresa actualizada con éxito',
             confirmButtonText: 'Aceptar',
           });
-          this.goBackToRegions();
+          this.goBackToCompanies();
         },
         error: () => {
-          this.updateRegionError.set('No se pudo actualizar la región. Intenta nuevamente.');
+          this.updateCompanyError.set('No se pudo actualizar la empresa. Intenta nuevamente.');
         },
       });
   }

@@ -68,11 +68,7 @@ export class Users implements OnInit {
           await Swal.fire({
             icon: 'success',
             title: 'Usuario eliminado',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1800,
-            timerProgressBar: true,
+            confirmButtonText: 'Aceptar',
           });
         },
         error: async () => {

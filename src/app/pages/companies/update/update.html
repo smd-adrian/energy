@@ -1,0 +1,73 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Editar empresa</h2>
+      <p class="text-muted mb-0">Actualiza la información de la empresa seleccionada.</p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToCompanies()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  @if (isLoading()) {
+    <div class="placeholder-glow">
+      <span class="placeholder col-8 d-block mb-2"></span>
+      <span class="placeholder col-6 d-block mb-2"></span>
+      <span class="placeholder col-7 d-block mb-2"></span>
+    </div>
+  } @else {
+    <form [formGroup]="updateCompanyForm" (ngSubmit)="submitUpdateCompany()" novalidate>
+      @if (updateCompanyError()) {
+        <div class="alert alert-danger" role="alert">{{ updateCompanyError() }}</div>
+      }
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre de la empresa</label>
+        <input id="name" type="text" class="form-control" formControlName="name" />
+        @if (
+          updateCompanyForm.controls.name.touched &&
+          updateCompanyForm.controls.name.errors?.['required']
+        ) {
+          <small class="text-danger">El nombre es obligatorio.</small>
+        }
+        @if (
+          updateCompanyForm.controls.name.touched &&
+          updateCompanyForm.controls.name.errors?.['minlength']
+        ) {
+          <small class="text-danger">El nombre debe tener mínimo 2 caracteres.</small>
+        }
+      </div>
+
+      <div class="mb-4">
+        <label for="countryId" class="form-label">País</label>
+        <select id="countryId" class="form-select" formControlName="countryId">
+          <option [value]="0" disabled>-- Seleccione --</option>
+          @for (country of countries(); track country.id) {
+            <option [value]="country.id">{{ country.name }}</option>
+          }
+        </select>
+        @if (
+          updateCompanyForm.controls.countryId.touched &&
+          updateCompanyForm.controls.countryId.invalid
+        ) {
+          <small class="text-danger">Debes seleccionar un país.</small>
+        }
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="button" class="btn btn-secondary" (click)="goBackToCompanies()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            Guardando cambios...
+          } @else {
+            Actualizar empresa
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>

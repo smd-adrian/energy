@@ -1,0 +1,69 @@
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+    <div>
+      <h2 class="fw-bold fs-2 mb-1">Editar tipo de energía</h2>
+      <p class="text-muted mb-0">Actualiza la información del tipo de energía seleccionado.</p>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" (click)="goBackToEnergyTypes()">
+      Volver
+    </button>
+  </div>
+</div>
+
+<div class="bg-white shadow-sm rounded p-4 mb-4">
+  @if (isLoading()) {
+    <div class="placeholder-glow">
+      <span class="placeholder col-8 d-block mb-2"></span>
+      <span class="placeholder col-6 d-block mb-2"></span>
+      <span class="placeholder col-7 d-block mb-2"></span>
+    </div>
+  } @else {
+    <form [formGroup]="updateEnergyTypeForm" (ngSubmit)="submitUpdateEnergyType()" novalidate>
+      @if (updateEnergyTypeError()) {
+        <div class="alert alert-danger" role="alert">{{ updateEnergyTypeError() }}</div>
+      }
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre del tipo de energía</label>
+        <input id="name" type="text" class="form-control" formControlName="name" />
+        @if (
+          updateEnergyTypeForm.controls.name.touched &&
+          updateEnergyTypeForm.controls.name.errors?.['required']
+        ) {
+          <small class="text-danger">El nombre es obligatorio.</small>
+        }
+        @if (
+          updateEnergyTypeForm.controls.name.touched &&
+          updateEnergyTypeForm.controls.name.errors?.['minlength']
+        ) {
+          <small class="text-danger">El nombre debe tener mínimo 2 caracteres.</small>
+        }
+      </div>
+
+      <div class="mb-4">
+        <div class="form-check form-switch">
+          <input
+            id="renewable"
+            class="form-check-input"
+            type="checkbox"
+            formControlName="renewable"
+          />
+          <label class="form-check-label" for="renewable">Es energía renovable</label>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="button" class="btn btn-secondary" (click)="goBackToEnergyTypes()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            Guardando cambios...
+          } @else {
+            Actualizar tipo de energía
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>
