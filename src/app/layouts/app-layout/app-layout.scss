@@ -1,3 +1,13 @@
+.layout-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-body {
+  flex: 1 1 auto;
+}
+
 .sidebar {
   background-color: #2f3e4d;
   border-right: 1px solid #e0e0e0;
@@ -27,7 +37,22 @@
 .main-content {
   flex: 1;
   background-color: #f5f6f8;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.main-content-body {
+  flex: 1 1 auto;
+}
+
+.app-footer {
+  margin-top: auto;
+  background-color: #f5f6f8;
+  border-top: 1px solid #e0e0e0;
+  color: #6c757d;
+  font-size: 0.75rem;
+  line-height: 1.2;
 }
 
 .sidebar-overlay {

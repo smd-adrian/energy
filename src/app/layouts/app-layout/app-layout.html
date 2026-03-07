@@ -1,8 +1,8 @@
-<div class="d-flex flex-column" style="min-height: 100vh">
+<div class="layout-shell">
   <!-- Topbar -->
   <app-topbar (toggleMenu)="toggleSidebar()"></app-topbar>
 
-  <div class="d-flex flex-grow-1 position-relative">
+  <div class="layout-body d-flex position-relative">
     <!-- Overlay -->
     <ng-container *ngIf="isSidebarOpen()">
       <div class="sidebar-overlay d-lg-none" (click)="toggleSidebar()"></div>
@@ -13,7 +13,18 @@
 
     <!-- Main Content -->
     <main class="main-content px-2 py-2">
-      <router-outlet></router-outlet>
+      <div class="main-content-body">
+        <router-outlet></router-outlet>
+      </div>
+
+      <footer class="app-footer text-end py-1 px-3 small">
+        <div>Bootcamp Talento Tech 2026 · Programación</div>
+        <div>
+          Universidad de Antioquia · Universidad de Caldas · Ubicua · Ministerio de Tecnologías de
+          la Información y las Comunicaciones (MinTIC) · Departamento de Antioquia.
+        </div>
+        <div><strong>Desarrollado por Adrian Cano · Robert Leguizamón</strong></div>
+      </footer>
     </main>
   </div>
 </div>
