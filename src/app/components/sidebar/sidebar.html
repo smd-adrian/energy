@@ -1,12 +1,8 @@
 <nav id="sidebar" [class.show]="isSidebarOpen()" class="sidebar p-3">
   <ul class="nav flex-column mt-3">
     <li class="nav-item mb-2">
-      <a
-        class="nav-link"
-        [routerLink]="getRoutePath('dashboard')"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
+      <a class="nav-link" [routerLink]="getRoutePath('dashboard')" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
         <i class="bi bi-speedometer2 me-2"></i>Dashboard
       </a>
     </li>
@@ -25,6 +21,7 @@
         <i class="bi bi-building me-2"></i>Capacidad Instalada
       </a>
     </li>
+    @if (isAdmin()) {
     <hr class="text-secondary" />
     <small class="text-uppercase text-muted mb-2">Admin</small>
     <li class="nav-item mb-2">
@@ -67,5 +64,6 @@
         <i class="bi bi-journal-text me-2"></i>Registros de Energía
       </a>
     </li>
+    }
   </ul>
 </nav>

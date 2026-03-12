@@ -28,10 +28,18 @@ import { Index as ProductionIndex } from './pages/production/index/index';
 import { Index as ConsumptionIndex } from './pages/consumption/index/index';
 import { Index as CapacityIndex } from './pages/capacity/index/index';
 
+import { LoginComponent } from './components/login/login'; // IMPORTA EL LOGIN
+import { authGuard } from './guards/auth-guard';         // IMPORTA EL GUARD
+
 export const routes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent, // Esta ruta NO tiene AppLayout, saldrá limpia
+  },
   {
     path: '',
     component: AppLayout,
+    canActivate: [authGuard], // <--- ESTO PROTEGE TODA LA APP
     children: [
       {
         path: NAMED_ROUTES.dashboard.path,
@@ -142,7 +150,11 @@ export const routes: Routes = [
         redirectTo: NAMED_ROUTES.dashboard.path,
         pathMatch: 'full',
       },
-      // Aquí irán los otros componentes de páginas (producción, consumo, etc.)
+      //COMODÍN: Si escriben cualquier cosa rara, al login
+      {
+        path: '**',
+        redirectTo: 'login'
+      }
     ],
   },
 ];

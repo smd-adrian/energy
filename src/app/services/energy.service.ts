@@ -27,7 +27,7 @@ import { SolarCapacityTrendItem } from '../models/capacity.model';
   providedIn: 'root',
 })
 export class EnergyService {
-  private apiUrl = 'http://127.0.0.1:8080/api';
+  private apiUrl = 'http://149.130.174.114:8080/api';
 
   constructor(private http: HttpClient) {}
 
